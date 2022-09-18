@@ -3,13 +3,18 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { legacy_createStore as createStore } from 'redux';
+import { initialValue, useReducer } from './reducers/rootReducers';
+import { Provider } from 'react-redux'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ReactReduxComponent from './components/ReactReduxComponent';
 import ReactReducerComponent from './components/ReactReducerComponent';
 
+const store = createStore(useReducer, initialValue)
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+    <Provider store={store}>
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<App />} >
@@ -18,6 +23,7 @@ root.render(
         </Route>
       </Routes>
     </BrowserRouter>
+    </Provider>
   </React.StrictMode>
 );
 
