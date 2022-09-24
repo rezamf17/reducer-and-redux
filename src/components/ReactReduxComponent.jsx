@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Card, Box, Button, TextField } from '@mui/material';
 import { useDispatch, useSelector } from "react-redux";
 
 
 const ReactReduxComponent = () => {
+    const [currentAmount, setCurrentAmount] = useState(50)
     const username = useSelector((state) => state.user);
     const counter = useSelector((state) => state.counter);
   
@@ -24,6 +25,23 @@ const ReactReduxComponent = () => {
             type : 'reset'
         })
     }
+    const amountOnchange = (event) => {
+        const amountInField = parseInt(event.target.value)
+
+        setCurrentAmount(amountInField)
+    }
+    const decrease = () => {
+        dispatcher({
+            type : 'decrementSpec',
+            payload : currentAmount
+        })
+    }
+    const increase = () => {
+        dispatcher({
+            type : 'incrementSpec',
+            payload : currentAmount
+        })
+    }
     return(
         <>
          <Card>
@@ -41,6 +59,14 @@ const ReactReduxComponent = () => {
                 <Button variant="outlined" onClick={plusCounter}>
                     +1
                 </Button>
+            </Box>
+            <Box sx={{display : 'flex', gap : '1em'}} justifyContent="center" alignItems="center">
+                <TextField variant='outlined'
+                defaultValue={currentAmount}
+                onChange={amountOnchange}
+                ></TextField>
+                <Button variant='outlined' onClick={increase}>AMOUNT +</Button>
+                <Button variant='outlined' onClick={decrease}>AMOUNT -</Button>
             </Box>
         </Card>
         </>
