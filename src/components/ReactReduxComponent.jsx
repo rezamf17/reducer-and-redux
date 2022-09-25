@@ -1,46 +1,43 @@
 import React, {useState} from 'react';
 import { Card, Box, Button, TextField } from '@mui/material';
 import { useDispatch, useSelector } from "react-redux";
-
+import { selectUser, selectCounter } from '../features/counter/counterSlice';
+import {
+    increment,
+    decrement,
+    kosong,
+    incrementSpec,
+    decrementSpec
+} from '../features/counter/counterSlice'
 
 const ReactReduxComponent = () => {
     const [currentAmount, setCurrentAmount] = useState(50)
-    const username = useSelector((state) => state.user);
-    const counter = useSelector((state) => state.counter);
+    // const username = useSelector((state) => state.user);
+    // const counter = useSelector((state) => state.counter);
+    const username = useSelector(selectUser);
+    const counter = useSelector(selectCounter);
   
     // Untuk menggunakan dispatch (action) nya, kita gunakan dispatcher dari hooks useDispatch
     const dispatcher = useDispatch();
     const plusCounter = () => {
-        dispatcher({
-            type : 'increment'
-        })
+        dispatcher(increment())
     }
     const minusCounter = () => {
-        dispatcher({
-            type : 'decrement'
-        })
+        dispatcher(decrement())
     }
     const reset = () => {
-        dispatcher({
-            type : 'reset'
-        })
+        dispatcher(kosong())
     }
     const amountOnchange = (event) => {
-        const amountInField = parseInt(event.target.value)
+        const amountInField = isNaN(parseInt(event.target.value)) ? 0 : parseInt(event.target.value)
 
         setCurrentAmount(amountInField)
     }
     const decrease = () => {
-        dispatcher({
-            type : 'decrementSpec',
-            payload : currentAmount
-        })
+        dispatcher(incrementSpec(currentAmount))
     }
     const increase = () => {
-        dispatcher({
-            type : 'incrementSpec',
-            payload : currentAmount
-        })
+        dispatcher(decrementSpec(currentAmount))
     }
     return(
         <>
